@@ -8,7 +8,7 @@ import type {
 } from '@/types'
 import { getErrorMessage } from './utils'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://todo-app-full-stack-tgfk.vercel.app'
 
 /**
  * API client for backend communication

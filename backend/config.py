@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     BETTER_AUTH_SECRET: str
     
     # CORS
-    CORS_ORIGINS: str = "http://localhost:3000"
+    CORS_ORIGINS: str = "*"
     
     # Application
     DEBUG: bool = False

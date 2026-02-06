@@ -23,12 +23,19 @@ app = FastAPI(
 )
 
 # CORS middleware
+# Allow all origins or specific origins from config
+if settings.CORS_ORIGINS == "*":
+    cors_origins = ["*"]
+else:
+    cors_origins = settings.cors_origins_list
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Include routers
