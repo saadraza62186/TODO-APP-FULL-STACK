@@ -43,13 +43,19 @@ app.include_router(health.router)
 app.include_router(auth.router, prefix="/api")
 app.include_router(tasks.router, prefix="/api")
 
+# Initialize database tables on module import (for serverless)
+# This runs once when the function cold-starts
+try:
+    create_db_and_tables()
+    logger.info("Database initialization complete")
+except Exception as e:
+    logger.warning(f"Database initialization skipped or failed: {e}")
+
 
 @app.on_event("startup")
 def on_startup():
-    """Initialize database on startup."""
+    """Application startup hook."""
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
-    create_db_and_tables()
-    logger.info("Application startup complete")
 
 
 @app.on_event("shutdown")

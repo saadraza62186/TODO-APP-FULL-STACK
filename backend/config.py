@@ -6,12 +6,12 @@ class Settings(BaseSettings):
     """Application configuration settings."""
     
     # Database
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite:///./test.db"  # Default for testing
     DB_POOL_SIZE: int = 2
     DB_MAX_OVERFLOW: int = 5
     
     # Authentication
-    BETTER_AUTH_SECRET: str
+    BETTER_AUTH_SECRET: str = "default-secret-key-change-in-production-min-32-chars-long"
     
     # CORS
     CORS_ORIGINS: str = "*"
