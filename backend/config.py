@@ -7,8 +7,8 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str
-    DB_POOL_SIZE: int = 5
-    DB_MAX_OVERFLOW: int = 10
+    DB_POOL_SIZE: int = 2
+    DB_MAX_OVERFLOW: int = 5
     
     # Authentication
     BETTER_AUTH_SECRET: str
