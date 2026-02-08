@@ -1,10 +1,16 @@
-# Phase II: Todo Full-Stack Web Application
+# Todo Full-Stack Web Application with AI Chatbot
 
 ## 🎯 Project Overview
 
-This is a complete full-stack todo application built for Hackathon II Phase 2, using **spec-driven development** with Claude Code and Spec-Kit Plus. The application transforms a console app into a modern multi-user web application with persistent storage.
+This is a complete full-stack todo application built using **spec-driven development** with Claude Code and Spec-Kit Plus. The application includes:
+
+- **Phase I**: Console-based todo application
+- **Phase II**: Multi-user web application with persistent storage
+- **Phase III**: AI-powered chatbot for natural language task management ✨ NEW!
 
 ## 📋 Features Implemented
+
+### Phase II Features
 
 ✅ **User Authentication** (Better Auth with JWT)
 - User signup and signin
@@ -38,6 +44,41 @@ This is a complete full-stack todo application built for Hackathon II Phase 2, u
 - Automatic schema creation
 - Connection pooling
 
+### Phase III Features ✨ NEW!
+
+✅ **AI-Powered Chatbot**
+- Natural language task management
+- Conversational interface
+- Context-aware responses
+- Multi-tool execution
+
+✅ **MCP Server Architecture**
+- 5 task operation tools (add, list, complete, delete, update)
+- Stateless server design
+- Standardized tool interface
+- OpenAI function calling integration
+
+✅ **Persistent Conversations**
+- Conversation history stored in database
+- Resume conversations anytime
+- Full audit trail
+- Stateless request cycle
+
+✅ **Advanced AI Capabilities**
+- GPT-4 language model
+- Tool chaining and composition
+- Intent recognition
+- Error handling and recovery
+
+**Example Commands:**
+- "Add a task to buy groceries"
+- "Show me all my pending tasks"
+- "Mark task 3 as complete"
+- "Delete the meeting task"
+- "Change task 1 to 'Call mom tonight'"
+
+[📖 Read full Phase III documentation](./docs/PHASE3_README.md)
+
 ## 🛠 Technology Stack
 
 | Layer | Technology |
@@ -47,34 +88,61 @@ This is a complete full-stack todo application built for Hackathon II Phase 2, u
 | **ORM** | SQLModel |
 | **Database** | Neon Serverless PostgreSQL |
 | **Authentication** | Better Auth with JWT |
+| **AI** | OpenAI GPT-4 (Phase III) ✨ |
+| **MCP** | Official MCP SDK (Phase III) ✨ |
 | **Spec-Driven** | Claude Code + Spec-Kit Plus |
 
 ## 📁 Project Structure
-
-```
-Phase 2/
-├── .spec-kit/              # Spec-Kit configuration
-│   └── config.yaml
+TODO-APP-FULL-STACK/
 ├── specs/                  # Comprehensive specifications
 │   ├── overview.md
 │   ├── architecture.md
 │   ├── features/           # Feature specs
 │   ├── api/                # API specs
 │   ├── database/           # Database schema
-│   └── ui/                 # UI specs
+│   ├── ui/                 # UI specs
+│   └── phase3/             # Phase III specs ✨
+│       ├── mcp-tools.md
+│       ├── agent-behavior.md
+│       ├── api-endpoints.md
+│       └── database-schema.md
 ├── backend/                # FastAPI backend
 │   ├── main.py
-│   ├── models.py
-│   ├── schemas.py
+│   ├── models.py           # Updated with Conversation & Message
+│   ├── schemas.py          # Updated with chat schemas
 │   ├── routes/
+│   │   ├── auth.py
+│   │   ├── tasks.py
+│   │   └── chat.py         # Phase III chat routes ✨
+│   ├── mcp/                # MCP server ✨
+│   │   ├── server.py
+│   │   └── __init__.py
+│   ├── services/           # AI service ✨
+│   │   ├── ai_service.py
+│   │   └── __init__.py
+│   ├── migrations/         # Database migrations ✨
+│   │   ├── 001_add_chat_tables.sql
+│   │   ├── run_migration.py
+│   │   └── README.md
 │   ├── middleware/
-│   └── requirements.txt
+│   └── requirements.txt    # Updated with OpenAI & MCP
 ├── frontend/               # Next.js frontend
 │   ├── app/
+│   │   ├── tasks/
+│   │   ├── chat/           # AI chat page ✨
+│   │   │   └── page.tsx
+│   │   ├── signin/
+│   │   └── signup/
 │   ├── components/
+│   │   ├── layout/
+│   │   │   └── header.tsx  # Updated with chat link
+│   │   └── tasks/
 │   ├── lib/
 │   ├── types/
 │   └── package.json
+├── docs/
+│   └── PHASE3_README.md    # Phase III documentation ✨
+├── docker-compose.yml      # Docker orchestration
 ├── docker-compose.yml      # Docker orchestration
 ├── CLAUDE.md               # Root instructions
 └── README.md               # This file
@@ -177,7 +245,12 @@ DATABASE_URL=postgresql://user:password@host:5432/dbname?sslmode=require
 BETTER_AUTH_SECRET=your-secret-key-min-32-characters-long
 CORS_ORIGINS=http://localhost:3000
 DEBUG=false
+
+# Phase III: OpenAI API Key
+OPENAI_API_KEY=your-openai-api-key-here
 ```
+
+**Get OpenAI API Key:** https://platform.openai.com/api-keys
 
 ### Frontend (.env.local)
 ```env
@@ -189,6 +262,8 @@ BETTER_AUTH_URL=http://localhost:3000
 ## 📡 API Endpoints
 
 All endpoints require JWT token in `Authorization: Bearer <token>` header.
+
+### Task Endpoints (Phase II)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -202,6 +277,38 @@ All endpoints require JWT token in `Authorization: Bearer <token>` header.
 **Query Parameters for GET /tasks:**
 - `status`: Filter by status (all, pending, completed)
 - `sort`: Sort order (created, title, updated)
+
+### Chat Endpoints (Phase III) ✨
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/{user_id}/chat` | Send message to AI chatbot |
+| GET | `/api/{user_id}/conversations` | List all conversations |
+| GET | `/api/{user_id}/conversations/{id}` | Get conversation history |
+| DELETE | `/api/{user_id}/conversations/{id}` | Delete conversation |
+
+**Example Chat Request:**
+```json
+{
+  "conversation_id": 1,  // Optional
+  "message": "Add a task to buy groceries"
+}
+```
+
+**Example Chat Response:**
+```json
+{
+  "conversation_id": 1,
+  "response": "I've added 'Buy groceries' to your task list (Task #5).",
+  "tool_calls": [
+    {
+      "tool": "add_task",
+      "arguments": {"user_id": "user123", "title": "Buy groceries"},
+      "result": {"task_id": 5, "status": "created", "title": "Buy groceries"}
+    }
+  ]
+}
+```
 
 ## 🗄 Database Schema
 

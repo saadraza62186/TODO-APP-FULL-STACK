@@ -4,7 +4,7 @@ import logging
 
 from config import settings
 from db import create_db_and_tables
-from routes import health, tasks, auth
+from routes import health, tasks, auth, chat
 
 # Configure logging
 logging.basicConfig(
@@ -42,6 +42,7 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(auth.router, prefix="/api")
 app.include_router(tasks.router, prefix="/api")
+app.include_router(chat.router, prefix="/api")  # Phase III: AI Chat
 
 # Initialize database tables on module import (for serverless)
 # This runs once when the function cold-starts

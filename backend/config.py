@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "Todo API"
     APP_VERSION: str = "1.0.0"
     
+    # AI Service
+    GOOGLE_API_KEY: str = ""
+    
     @property
     def cors_origins_list(self) -> List[str]:
         """Parse CORS origins string into list."""
@@ -29,6 +32,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"  # Allow extra environment variables
 
 
 settings = Settings()
